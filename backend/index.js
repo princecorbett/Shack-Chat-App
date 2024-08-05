@@ -6,8 +6,10 @@ import mongoose from "mongoose";
 import UserChats from "./models/userChats.js";
 import Chat from "./models/chat.js";
 import { ClerkExpressWithAuth, ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
+import fs from 'fs';
 
-
+const apiKey = fs.readFileSync('/run/secrets/api_key', 'utf8').trim();
+console.log(`API Key: ${apiKey}`);
 const port = process.env.PORT || 3000;
 const app = express();
 

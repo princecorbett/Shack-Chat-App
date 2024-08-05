@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    secrets:
+      - react_app_api_key
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/shackDev
+      - NODE_ENV=development
+    secrets:
+      - api_key
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+secrets:
+  react_app_api_key:
+    file: ./secrets/react_app_api_key
+  api_key:
+    file: ./secrets/api_key
+
+networks:
+  app-network:
+    driver: bridge
